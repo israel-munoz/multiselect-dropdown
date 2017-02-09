@@ -1,0 +1,14 @@
+{
+  "name": "multiselect-dropdown",
+  "description": "Multi-select drop-down control to replace regular select element",
+  "main": "multiselect-dropdown.js",
+  "authors": [
+    "Israel Muñoz <israel.munoz.v@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "select",
+    "multiselect"
+  ],
+  "homepage": "https://github.com/israel-munoz/multiselect-dropdown"
+}
