@@ -139,25 +139,41 @@ window.multiSelect = (function () {
     return item;
   }
 
-  function createMultiselect(select) {
-    var options = select.getElementsByTagName('option'),
-      control = document.createElement('div'),
-      display = document.createElement('div'),
-      list = document.createElement('div'),
+  function setMultiselectOptions(select, optionsList) {
+    var options = select.querySelectorAll('option'),
       i, j = options.length;
+    for (i = 0; i < j; i += 1) {
+      optionsList.appendChild(createMultiselectOption(options[i]));
+    }
+  }
+
+  function createMultiselect(select) {
+    if (hasClass(select.parentElement, 'multi-select')) {
+      return createMultiselect.reload(select);
+    }
+    var control = document.createElement('div'),
+      display = document.createElement('div'),
+      list = document.createElement('div');
     control.className = select.className;
     addClass(control, 'multi-select');
     addClass(display, 'multi-select-display');
     addClass(list, 'multi-select-options');
-    for (i = 0; i < j; i += 1) {
-      list.appendChild(createMultiselectOption(options[i]));
-    }
+    setMultiselectOptions(select, list);
     select.multiple = true;
     display.addEventListener('click', displayClicked, false);
     wrap(select, control);
     control.appendChild(display);
     control.appendChild(list);
     updateDisplay(control);
+  }
+
+  createMultiselect.reload = function (select) {
+    var multiSelect = select.parentElement;
+    if (hasClass(multiSelect, 'multi-select')) {
+      var list = multiSelect.querySelector('.multi-select-options');
+      list.innerHTML = '';
+      setMultiselectOptions(select, list);
+    }
   }
 
   return createMultiselect;
