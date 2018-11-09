@@ -5,6 +5,11 @@
 window.multiSelect = (function () {
   'use strict';
 
+  var defaultOptions = {
+    className: '',
+    maxVisibleOptions: 0
+  };
+
   function triggerEvent(element, eventName) {
     var event;
     if (document.createEvent) {
@@ -55,7 +60,12 @@ window.multiSelect = (function () {
   }
   
   function addClass(element, className) {
-    if (element.classList) {
+    if (className.indexOf(' ') >= 0) {
+      var classNames = className.split(' ');
+      for (var i = 0; i < classNames.length; i += 1) {
+        addClass(element, classNames[i]);
+      }
+    } else if (element.classList) {
       element.classList.add(className);
     } else {
       var classes = element.className.split(' '),
@@ -68,7 +78,12 @@ window.multiSelect = (function () {
   }
   
   function removeClass(element, className) {
-    if (element.classList) {
+    if (className.indexOf(' ') >= 0) {
+      var classNames = className.split(' ');
+      for (var i = 0; i < classNames.length; i += 1) {
+        removeClass(element, classNames[i]);
+      }
+    } else if (element.classList) {
       element.classList.remove(className);
     } else {
       var classes = element.className.split(' '),
@@ -112,6 +127,14 @@ window.multiSelect = (function () {
       updateDisplay(control);
     } else {
       addClass(control, 'multi-select-open');
+      var options = control.querySelector('.multi-select-options'),
+        maxHeight;
+      if (options.children && control.multiSelect && control.multiSelect.maxVisibleOptions) {
+        maxHeight = options.children[0].clientHeight * control.multiSelect.maxVisibleOptions;
+      } else {
+        maxHeight = window.innerHeight - options.getBoundingClientRect().y - 10;
+      }
+      options.style.maxHeight = maxHeight > 0 ? maxHeight + 'px' : '100%';
       window.addEventListener('click', hideListener, true);
     }
   }
@@ -147,14 +170,23 @@ window.multiSelect = (function () {
     }
   }
 
-  function createMultiselect(select) {
+  function createMultiselect(select, options) {
+    options = Object.assign({}, defaultOptions, options || {});
     if (hasClass(select.parentElement, 'multi-select')) {
+      if (options.className) {
+        addClass(select.parentElement, options.className);
+      }
+      select.parentElement.multiSelect = options;
       return createMultiselect.reload(select);
     }
     var control = document.createElement('div'),
       display = document.createElement('div'),
       list = document.createElement('div');
+    control.multiSelect = options;
     control.className = select.className;
+    if (options.className) {
+      addClass(control, options.className);
+    }
     addClass(control, 'multi-select');
     addClass(display, 'multi-select-display');
     addClass(list, 'multi-select-options');
