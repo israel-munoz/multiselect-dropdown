@@ -12,16 +12,29 @@ The styles of the element are based on Google Chrome's `<select>` UI, which are 
 ## Usage
 For any `<select>` element, just run the `window.multiSelect` function
 ```Javascript
-multiSelect(document.getElementById("test-select"));
+multiSelect(
+    document.getElementById("test-select"), // target element
+    {className: '', maxVisibleOptions: 0}   // options
+);
 ```
 The multiselect control will have the same classes of the select at the moment of calling this function.
 
 The text displayed in the control will be the labels of the checked options, comma-separated. This will be updating when moving out of the control, at the moment the options list is hidden. At the same time, any listener for the `change` event of the original select control will be triggered.
 
 Each time an option is checked, it will update the original select element, allowing to get the values from that same element.
+#### Options
+The `options` parameter is not required.
+##### `className`
+Custom class list separated by space to add to the multi-select control.
+##### `maxVisibleOptions`
+Max number of visible items in the options container. If unset or `0`, the element's maximum size will be determined by the element's position and viewport size.
 
 ### Reload
 If the `<select>` options are changed, calling the `multiSelect` function again will update the options list, or you can use the `multiSelect.reload` function for the same purpose.
 ```Javascript
-multiSelect.reload(document.getElementById("test-select"))
+multiSelect.reload(
+    document.getElementById("test-select"), // target element
+    {className: '', maxVisibleOptions: 0}   // options
+)
 ```
+If the second parameter is set, the options will be overriden in the existing control.
