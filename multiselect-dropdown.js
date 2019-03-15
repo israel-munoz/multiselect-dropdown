@@ -1,4 +1,4 @@
-/*! multiselect-dropdown v1.0
+/*! multiselect-dropdown v1.3
  *  Multi-select drop-down control to replace regular select element.
  *  https://github.com/israel-munoz/multiselect-dropdown
  */
@@ -9,6 +9,18 @@ window.multiSelect = (function () {
     className: '',
     maxVisibleOptions: 0
   };
+
+  function mergeObjects(a, b) {
+    if (Object.assign) {
+      return Object.assign({}, a, b);
+    }
+    return [a, b].reduce((function (r, o) {
+      Object.keys(o).forEach(function (k) {
+        r[k] = o[k];
+      });
+      return r;
+    }), {});
+  }
 
   function triggerEvent(element, eventName) {
     var event;
@@ -114,6 +126,9 @@ window.multiSelect = (function () {
   function displayClicked(evt) {
     var display = evt.target,
       control = display.parentElement,
+      overlay = control.multiSelect.overlay,
+      options = control.querySelector('.multi-select-options')
+        || overlay.querySelector('.multi-select-options'),
       hideListener = function (evt) {
         if (isDescendant(evt.target, control)) {
           return;
@@ -122,23 +137,35 @@ window.multiSelect = (function () {
         updateDisplay(control);
         this.removeEventListener('click', hideListener);
       };
-    if (hasClass(control, 'multi-select-open')) {
+    if (overlay) {
       removeClass(control, 'multi-select-open');
+      control.appendChild(options);
+      overlay.parentElement.removeChild(overlay);
+      delete(control.multiSelect.overlay);
       updateDisplay(control);
     } else {
       addClass(control, 'multi-select-open');
-      var options = control.querySelector('.multi-select-options'),
-        maxHeight;
-      if (options.children && control.multiSelect && control.multiSelect.maxVisibleOptions) {
-        maxHeight = options.children[0].clientHeight * control.multiSelect.maxVisibleOptions;
-      } else {
-        maxHeight = window.innerHeight - options.getBoundingClientRect().y - 10;
-      }
-      options.style.maxHeight = maxHeight > 0 ? maxHeight + 'px' : '100%';
+      setOptionsBoundaries(control, options);
       window.addEventListener('click', hideListener, true);
+      overlay = document.createElement('div');
+      addClass(overlay, 'multi-select-options-overlay overlay-' + Number(new Date()));
+      overlay.appendChild(options);
+      document.body.appendChild(overlay);
+      control.multiSelect.overlay = overlay;
     }
   }
-  
+
+  function setOptionsBoundaries(control, options) {
+    var controlB = control.getBoundingClientRect();
+    var optionsTop = (controlB.y || controlB.top) + controlB.height;
+    options.style.minWidth = controlB.width + 'px';
+    options.style.top = optionsTop + 'px';
+    options.style.left = (controlB.x || controlB.left) + 'px';
+    optionsTop += 10;
+    options.style.maxHeight = (window.innerHeight - optionsTop) + 'px';
+    options.style.maxHeight = 'calc(100vh - ' + optionsTop + 'px)';
+  }
+
   function optionChanged(evt) {
     var input = evt.target,
       option = input._multiSelectOption;
@@ -158,6 +185,8 @@ window.multiSelect = (function () {
 
     label.appendChild(input);
     label.appendChild(document.createTextNode(option.textContent));
+
+    addClass(item, 'option');
     item.appendChild(label);
     return item;
   }
@@ -171,7 +200,7 @@ window.multiSelect = (function () {
   }
 
   function createMultiselect(select, options) {
-    options = Object.assign({}, defaultOptions, options || {});
+    options = mergeObjects(defaultOptions, options || {});
     if (hasClass(select.parentElement, 'multi-select')) {
       if (options.className) {
         addClass(select.parentElement, options.className);
