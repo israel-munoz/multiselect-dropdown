@@ -1,1 +1,1 @@
-export * from './multiselect-dropdown.js'
+export * from './dist/multiselect-dropdown.js';

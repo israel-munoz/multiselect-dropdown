@@ -1,6 +1,6 @@
 {
   "name": "multiselect-dropdown",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "Multi-select drop-down control to replace regular select element",
   "keywords": [
     "forms",
@@ -38,6 +38,7 @@
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
-    "gulp-uglify": "^3.0.2"
+    "gulp-uglify": "^3.0.2",
+    "yargs-parser": ">=5.0.0-security.0"
   }
 }

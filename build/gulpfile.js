@@ -11,26 +11,26 @@ gulp.task('clear-dist', () => {
 gulp.task('create-index', () => {
   return new Promise(resolve => {
     const fs = require('fs');
-    if (!fs.existsSync('./index.js')) {
-      fs.writeFileSync('./index.js', 'export * from \'./multiselect-dropdown.js\'');
+    if (!fs.existsSync('../index.js')) {
+      fs.writeFileSync('../index.js', 'export * from \'./dist/multiselect-dropdown.js\';');
     }
     resolve();
   });
 });
 
 gulp.task('css', () => {
-  return gulp.src('src/**/*.css')
+  return gulp.src('../src/**/*.css')
     .pipe(cleanCss())
-    .pipe(gulp.dest('./'));
+    .pipe(gulp.dest('../'));
 });
 
 gulp.task('build', () => {
-  return gulp.src('./src/multiselect-dropdown.js')
+  return gulp.src('../src/multiselect-dropdown.js')
     .pipe(babel({
       presets: ['@babel/env']
     }))
     .pipe(uglify())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('../dist'));
 });
 
 gulp.task('default', gulp.series('clear-dist', 'build', 'css', 'create-index'));
