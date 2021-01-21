@@ -10,9 +10,9 @@ It should work in any recent browser. The most "recent" thing I'm using here is 
 The styles of the element are based on Google Chrome's `<select>` UI, which are pretty simple. It shouldn't be a problem to adapt it to your own styles.
 
 ## Usage
-For any `<select>` element, just run the `window.multiSelect` function
+For any `<select>` element, just create an instance of the `window.multiSelect` class:
 ```Javascript
-multiSelect(
+const dropdown = new multiSelect(
     document.getElementById("test-select"), // target element
     {className: '', maxVisibleOptions: 0}   // options
 );
@@ -29,12 +29,20 @@ Custom class list separated by space to add to the multi-select control.
 ##### `maxVisibleOptions`
 Max number of visible items in the options container. If unset or `0`, the element's maximum size will be determined by the element's position and viewport size.
 
-### Reload
-If the `<select>` options are changed, calling the `multiSelect` function again will update the options list, or you can use the `multiSelect.reload` function for the same purpose.
-```Javascript
-multiSelect.reload(
-    document.getElementById("test-select"), // target element
-    {className: '', maxVisibleOptions: 0}   // options
-)
+### Reset options
+To change the options of the current control, call the `setConfig` function from the muti-select object.
+
+```JavaScript
+dropdown.setConfig(
+    {
+        className: 'new-class',
+        maxVisibleOptions: 3
+    }
+);
 ```
-If the second parameter is set, the options will be overriden in the existing control.
+
+### Reload
+If the `<select>` options are changed, calling the `reload` function from the multi-select object will update the options list.
+```Javascript
+dropdown.reload();
+```
