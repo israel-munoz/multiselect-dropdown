@@ -8,7 +8,7 @@ This control replaces an HTMLSelect element with a similar dropdown, which will 
 
 This is a standalone control, so it doesn't require any other plugin, unless you need to implement a polyfill for older browsers.
 
-It should work in any recent browser. The most "recent" thing I'm using here is `querySelector` and `classList`, but for the latest I added functions to cover unsupported browsers.
+It should work in any modern browser. As it uses some ES6 characteristics, it is recommended to use polyfills if required in deprecated browsers.
 
 The styles of the element are based on Google Chrome's `<select>` UI, which are pretty simple. It shouldn't be a problem to adapt it to your own styles.
 
@@ -39,7 +39,7 @@ Or, if you need it as a regular `<link>` tag, just import the file directly to y
 <link rel="stylesheet" href="[node_modules]/multiselect-dropdown/multiselect-dropdown.css">
 ```
 
-#### Creating the dropdown object
+### Creating the dropdown object
 For any `<select>` element, just create an instance of the `multiSelect` class:
 ```Javascript
 const dropdown = new multiSelect(
