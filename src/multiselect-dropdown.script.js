@@ -29,12 +29,14 @@ class multiSelect {
     this.element.appendChild(display);
     this.element.appendChild(optionsList);
     const closeOptions = () => {
-      this.element.classList.remove('multi-select-open');
-      this.element.appendChild(optionsList);
-      this.overlay.remove();
-      delete this.overlay;
-      this._updateDisplay();
-      window.removeEventListener('scroll', onscroll);
+      if (this.overlay) {
+        this.element.classList.remove('multi-select-open');
+        this.element.appendChild(optionsList);
+        this.overlay.remove();
+        delete this.overlay;
+        this._updateDisplay();
+        window.removeEventListener('scroll', onscroll);
+      }
     };
     const onscroll = () => this._moveOptions();
     const onwindowclick = evt => {
