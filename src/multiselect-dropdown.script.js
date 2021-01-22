@@ -73,14 +73,6 @@ class multiSelect {
     this.element.multiSelect = this;
   }
 
-  /** @type { MultiSelectOptions } Default options for multiselect-dropdown */
-  defaultOptions() {
-    return {
-      className: '',
-      maxVisibleOptions: 10
-    };
-  };
-
   /**
    * Reset multi-select control options.
    * @param { MultiSelectOptions } options
@@ -88,8 +80,12 @@ class multiSelect {
   setConfig(options) {
     this.options = Object.assign({}, this.defaultOptions, options);
     this.element.className = 'multi-select';
-    this.element.classList.add(this.options.className.split(' '));
-    this._setOptionsSize();
+    if (this.options.className) {
+      this.element.classList.add(this.options.className.split(' '));
+    }
+    if (this.overlay) {
+      this._setOptionsSize();
+    }
   }
 
   reload() {
@@ -116,6 +112,14 @@ class multiSelect {
       optionsList.appendChild(item);
     });
   }
+
+  /** @type { MultiSelectOptions } Default options for multiselect-dropdown */
+  defaultOptions() {
+    return {
+      className: '',
+      maxVisibleOptions: 10
+    };
+  };
 
   _updateDisplay() {
     const display = this.element.querySelector('.multi-select-display');

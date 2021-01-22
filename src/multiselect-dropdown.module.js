@@ -84,10 +84,14 @@ export default class multiSelect {
    * @param { MultiSelectOptions } options
    */
   setConfig(options) {
-    this.options = Object.assign({}, this.defaultOptions, options);
+    this.options = Object.assign({}, defaultOptions, options);
     this.element.className = 'multi-select';
-    this.element.classList.add(this.options.className.split(' '));
-    this._setOptionsSize();
+    if (this.options.className) {
+      this.element.classList.add(this.options.className.split(' '));
+    }
+    if (this.overlay) {
+      this._setOptionsSize();
+    }
   }
 
   reload() {
