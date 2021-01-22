@@ -9,19 +9,13 @@
  * @property { number } maxVisibleOptions Max number of options visible in the dropdown panel.
  */
 
-/** @type { MultiSelectOptions } Default options for multiselect-dropdown */
-const defaultOptions = {
-  className: '',
-  maxVisibleOptions: 10
-};
-
-export class multiSelect {
+class multiSelect {
   /**
    * @param { HTMLSelectElement } select HTML select element to convert into multiselect dropdown.
    * @param { MultiSelectOptions } options Optional settings for the multiselect object.
    */
   constructor(select, options) {
-    this.options = Object.assign({}, defaultOptions, options);
+    this.options = Object.assign({}, this.defaultOptions, options);
     this.element = document.createElement('div');
     const display = document.createElement('div');
     const optionsList = document.createElement('div');
@@ -76,6 +70,14 @@ export class multiSelect {
     this.reload();
     this.element.multiSelect = this;
   }
+
+  /** @type { MultiSelectOptions } Default options for multiselect-dropdown */
+  defaultOptions() {
+    return {
+      className: '',
+      maxVisibleOptions: 10
+    };
+  };
 
   /**
    * Reset multi-select control options.

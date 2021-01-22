@@ -1,7 +1,10 @@
 # mutiselect-dropdown
-Multi-select drop-down control to replace regular select element.
+## Project website
+https://www.destesoft.com/multiselect-dropdown
 
-This control replaces an HTMLSelect element with a similar dropdown, which will include a checkbox in each option, to allow multiple selection in an inline control.
+## A JavaScript control to replace the native HTML multiselect element
+
+This control replaces an HTMLSelect element with a similar dropdown, which will include a checkbox in each option, to allow multiple selection using an inline control.
 
 This is a standalone control, so it doesn't require any other plugin, unless you need to implement a polyfill for older browsers.
 
@@ -10,7 +13,34 @@ It should work in any recent browser. The most "recent" thing I'm using here is 
 The styles of the element are based on Google Chrome's `<select>` UI, which are pretty simple. It shouldn't be a problem to adapt it to your own styles.
 
 ## Usage
-For any `<select>` element, just create an instance of the `window.multiSelect` class:
+### Adding required files to your project
+Import the `multiSelect` class from the package in your scripts:
+```Javascript
+import multiSelect from 'multiselect-dropdown';
+```
+
+If you need it as a regular `<script>` tag, simply use the `multiselect-dropdown.min.js` file located inside the package source.
+```HTML
+<script src="[node_modules]/multiselect-dropdown/multiselect-dropdown.min.js"></script>
+```
+You can copy the file to a directory in your project source.
+
+Add the `multiselect-dropdown.css` stylesheet. If using a bundler like webpack, you can import it to the main script module:
+```Javascript
+import 'multiselect-dropdown/multiselect-dropdown.css';
+```
+If using a CSS transpiler, like SASS, you can also import it to the main stylesheet:
+```CSS
+@import '~multiselect-dropdown/multiselect-dropdown.css';
+```
+
+Or, if you need it as a regular `<link>` tag, just import the file directly to your web page.
+```HTML
+<link rel="stylesheet" href="[node_modules]/multiselect-dropdown/multiselect-dropdown.css">
+```
+
+#### Creating the dropdown object
+For any `<select>` element, just create an instance of the `multiSelect` class:
 ```Javascript
 const dropdown = new multiSelect(
     document.getElementById("test-select"), // target element
